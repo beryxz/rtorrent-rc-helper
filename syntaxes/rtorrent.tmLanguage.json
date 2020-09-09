@@ -1,0 +1,239 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "rtorrent.rc",
+	"scopeName": "source.rtorrent",
+	"patterns": [
+		{ "include": "#statements" }
+	],
+	"repository": {
+		"statements": {
+			"patterns": [
+				{ "include": "#declarations" },
+				{ "include": "#comments" }
+			]
+		},
+		"declarations": {
+			"patterns": [
+				{ "include": "#var-expr" }
+			]
+		},
+		"comments": {
+			"name": "comment.line.number-sign.rtorrent",
+			"match": "#.*$"
+		},
+		"strings": {
+			"name": "string.quoted.double.rtorrent",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{ "include": "#escape-char" }
+			]
+		},
+		"escape-char": {
+			"name": "constant.character.escape.rtorrent",
+			"match": "\\\\(.|\\n)"
+		},
+		"literals": {
+			"patterns": [
+				{ "include": "#numeric-literal" },
+				{ "include": "#boolean-literal" }
+			]
+		},
+		"numeric-literal": {
+			"match": "(?<=[\\s\\.\\-=:])(-?\\d+M?)(?=[\\s\\.\\-:])",
+			"captures": {
+				"1": {
+					"name": "constant.numeric.decimal.rtorrent"
+				}
+			}
+		},
+		"boolean-literal": {
+			"match": "(?<=[\\s=])(true|false)(?=\\s)",
+			"captures": {
+				"1": {
+					"name": "constant.language.boolean.rtorrent"
+				}
+			}
+		},
+		"punctuations": {
+			"match": "(?:((?<!\\d)\\.(?!\\d))|(,|:|\\-(?!\\d)|\\.)|([\\(\\)])|(\\|))",
+			"captures": {
+				"1": {
+					"name": "punctuation.access.rtorrent"
+				},
+				"2": {
+					"name": "punctuation.separator.rtorrent"
+				},
+				"3": {
+					"name": "meta.brace.round"
+				},
+				"4": {
+					"name": "keyword.operator.logical.rtorrent"
+				}
+			}
+		},
+		"var-expr": {
+			"patterns": [
+				{
+					"name": "meta.var.expr.rtorrent",
+					"begin": "(?<=^)(method|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter)",
+					"end": "$",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.type.rtorrent"
+						}
+					},
+					"patterns": [
+						{ "include": "#groups" },
+						{ "include": "#after-equal" },
+						{ "include": "#punctuations" },
+						{ "include": "#comments" }
+					]
+				}
+			]
+		},
+		"var-expr-inside-braces": {
+			"patterns": [
+				{
+					"name": "meta.var.expr.rtorrent",
+					"begin": "\\((method|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter)",
+					"end": "\\)",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.type.rtorrent"
+						}
+					},
+					"patterns": [
+						{ "include": "#groups" },
+						{ "include": "#punctuations" }
+					]
+				}
+			]
+		},
+		"after-equal": {
+			"begin": "(=)",
+			"end": "(?<!\\\\)\\n",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.operator.assignment.rtorrent"
+				}
+			},
+			"patterns": [
+				{ "include": "#var-expr-inside-braces" },
+				{ "include": "#punctuations" },
+				{ "include": "#escape-char" },
+				{ "include": "#strings" },
+				{ "include": "#literals" },
+				{ "include": "#object-types" }
+			]
+		},
+		"object-types": {
+			"match": "(?<![\\w/])(prefer_plaintext|allow_incoming|enable_retry|try_outgoing|reliability|require_rc4|require_RC4|throughput|localhost|lowdelay|default|disable|mincost|private|require|simple|static|string|const|value|auto|bool|list|none|off|yes|no|on)",
+			"name": "support.type.rtorrent"
+		},
+		"groups": {
+			"patterns": [
+				{ "include": "#method-group" },
+				{ "include": "#execute-group" },
+				{ "include": "#system-group" },
+				{ "include": "#log-group" },
+				{ "include": "#dht-group" },
+				{ "include": "#pieces-group" },
+				{ "include": "#protocol-group" },
+				{ "include": "#throttle-group" },
+				{ "include": "#network-group" },
+				{ "include": "#ip_tables-group" },
+				{ "include": "#ipv4_filter-group" }
+			]
+		},
+		"method-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=method\\.)(insert|const|erase|get|set_key|set|has_key|list_keys|rlookup|redirect)"
+				}
+			]
+		},
+		"execute-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?:execute2|(?<=execute\\.)(nothrow|throw|capture_nothrow|capture|raw_nothrow|raw))"
+				}
+			]
+		},
+		"system-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=system\\.)(listMethods|methodExist|methodHelp|methodSignature|getCapabilities|capabilities|multicall|daemon|shutdown|api_version|client_version|library_version|colors|file_status_cache|hostname|random|time_usec|time_seconds|time|umask|files|file|has|cwd|env|pid)"
+				}
+			]
+		},
+		"log-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=log\\.)(add_output|execute|xmlrpc|open_file_pid|open_gz_file_pid|open_file|open_gz_file|vmmap|messages)"
+				}
+			]
+		},
+		"dht-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=dht\\.)(add_node|mode|port|statistics|throttle)"
+				}
+			]
+		},
+		"pieces-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=pieces\\.)(hash|memory|preload|stats_not_preloaded|stats_preloaded|stats|sync)"
+				}
+			]
+		},
+		"protocol-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=protocol\\.)(choke_heuristics|connection|encryption|pex)"
+				}
+			]
+		},
+		"throttle-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=throttle\\.)(max_downloads|max_uploads|min_downloads|min_uploads|max_peers|min_peers|unchoked_downloads|unchoked_uploads|global_down|global_up|names|down|up|ip)"
+				}
+			]
+		},
+		"network-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=network\\.)(bind_address|local_address|max_open_files|max_open_sockets|open_sockets|port_open|port_random|port_range|proxy_address|receive_buffer|send_buffer|history|xmlrpc|scgi|tos|http|listen)"
+				}
+			]
+		},
+		"ip_tables-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=ip_tables\\.)(add_address|insert_table|size_data|get)"
+				}
+			]
+		},
+		"ipv4_filter-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=ipv4_filter\\.)(add_address|size_data|dump|load|get)"
+				}
+			]
+		}
+	}
+}
+

@@ -1,0 +1,51 @@
+{
+    "name": "rtorrent-rc-helper",
+    "displayName": "rtorrent.rc Helper",
+    "description": "Support for rtorrent configuration files in Visual Studio Code",
+    "author": {
+        "name": "beryxz",
+        "url": "https://github.com/beryxz"
+    },
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/beryxz/rtorrent-rc-helper.git"
+    },
+    "license": "SEE LICENSE IN LICENSE",
+    "scripts": {
+        "deploy": "vsce publish"
+    },
+    "version": "0.1.0",
+    "publisher": "beryxz",
+    "engines": {
+        "vscode": "^1.48.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Linters"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "rtorrent",
+                "aliases": [
+                    "rtorrent.rc",
+                    "rtorrent"
+                ],
+                "extensions": [
+                    "rtorrent.rc"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "rtorrent",
+                "scopeName": "source.rtorrent",
+                "path": "./syntaxes/rtorrent.tmLanguage.json"
+            }
+        ]
+    },
+    "devDependencies": {
+        "vsce": "^1.79.5"
+    }
+}
