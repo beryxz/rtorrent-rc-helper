@@ -40,7 +40,7 @@
 			]
 		},
 		"numeric-literal": {
-			"match": "(?<=[\\s\\.\\-=:])(-?\\d+M?)(?=[\\s\\.\\-:])",
+			"match": "(?<=[\\s\\.\\-=:])(-?\\d+M?)(?=[\\s\\.\\-\\):,])",
 			"captures": {
 				"1": {
 					"name": "constant.numeric.decimal.rtorrent"
@@ -56,7 +56,7 @@
 			}
 		},
 		"punctuations": {
-			"match": "(?:((?<!\\d)\\.(?!\\d))|(,|:|\\-(?!\\d)|\\.)|([\\(\\)])|(\\|))",
+			"match": "(?:((?<!\\d)\\.(?!\\d))|(,|:|\\-(?!\\d)|\\.)|([\\(\\)])|(\\|)|(\\^))",
 			"captures": {
 				"1": {
 					"name": "punctuation.access.rtorrent"
@@ -69,6 +69,9 @@
 				},
 				"4": {
 					"name": "keyword.operator.logical.rtorrent"
+				},
+				"5": {
+					"name": "keyword.other.rtorrent"
 				}
 			}
 		},
@@ -76,7 +79,7 @@
 			"patterns": [
 				{
 					"name": "meta.var.expr.rtorrent",
-					"begin": "(?<=^)(method|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter)",
+					"begin": "(?<=^)(convert|quit|cull|purge|tag|pyro|startup_time|cfg|array|math|to_kb|to_mb|to_xb|to_date|to_elapsed_time|to_gm_date|to_gm_time|to_time|to_throttle|value|load|session|schedule|schedule_remove|schedule2|schedule_remove2|start_tied|stop_untied|close_untied|remove_untied|close_low_diskspace|method|execute2|event|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter|view|ui|torrent_list_layout|download_list|try_import|import|branch|if|do|and|or|not|less|equal|greater|elapsed|compare|cat|string|strings|directory|encoding|encoding_list|trackers|print|add_peer|bind|catch|check_hash|connection_leech|connection_seed|download_rate|encoding_list|encryption|ip|key_layout|max_downloads|max_downloads_div|max_downloads_global|max_memory_usage|max_peers|max_peers_seed|max_uploads|max_uploads_div|max_uploads_global|min_downloads|min_peers|min_peers_seed|min_uploads|on_ratio|port_random|port_range|proxy_address|scgi_local|scgi_port|torrent_list_layout|upload_rate|file|fi|keys|d|f|p|t)(?=[\\. \\n])",
 					"end": "$",
 					"beginCaptures": {
 						"1": {
@@ -92,12 +95,12 @@
 				}
 			]
 		},
-		"var-expr-inside-braces": {
+		"var-expr-argument": {
 			"patterns": [
 				{
 					"name": "meta.var.expr.rtorrent",
-					"begin": "\\((method|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter)",
-					"end": "\\)",
+					"begin": "(?<=[\\( ,=])(convert|quit|cull|purge|tag|pyro|startup_time|cfg|array|math|to_kb|to_mb|to_xb|to_date|to_elapsed_time|to_gm_date|to_gm_time|to_time|to_throttle|value|load|session|schedule|schedule_remove|schedule2|schedule_remove2|start_tied|stop_untied|close_untied|remove_untied|close_low_diskspace|method|execute2|event|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter|view|ui|torrent_list_layout|download_list|try_import|import|branch|if|do|and|or|not|less|equal|greater|elapsed|compare|cat|string|strings|directory|encoding|encoding_list|trackers|print|add_peer|bind|catch|check_hash|connection_leech|connection_seed|download_rate|encoding_list|encryption|ip|key_layout|max_downloads|max_downloads_div|max_downloads_global|max_memory_usage|max_peers|max_peers_seed|max_uploads|max_uploads_div|max_uploads_global|min_downloads|min_peers|min_peers_seed|min_uploads|on_ratio|port_random|port_range|proxy_address|scgi_local|scgi_port|torrent_list_layout|upload_rate|file|fi|keys|d|f|p|t)(?=[\\.\\) ,])",
+					"end": "(?=[\\) ,\"])",
 					"beginCaptures": {
 						"1": {
 							"name": "entity.name.type.rtorrent"
@@ -119,7 +122,7 @@
 				}
 			},
 			"patterns": [
-				{ "include": "#var-expr-inside-braces" },
+				{ "include": "#var-expr-argument" },
 				{ "include": "#punctuations" },
 				{ "include": "#escape-char" },
 				{ "include": "#strings" },
@@ -128,7 +131,7 @@
 			]
 		},
 		"object-types": {
-			"match": "(?<![\\w/])(prefer_plaintext|allow_incoming|enable_retry|try_outgoing|reliability|require_rc4|require_RC4|throughput|localhost|lowdelay|default|disable|mincost|private|require|simple|static|string|const|value|auto|bool|list|none|off|yes|no|on)",
+			"match": "(?<![\\w/])(prefer_plaintext|allow_incoming|download_list|enable_retry|try_outgoing|reliability|require_RC4|require_rc4|incomplete|throughput|localhost|complete|leeching|lowdelay|trackers|compact|default|disable|hashing|mincost|private|require|seeding|started|stopped|active|simple|static|string|const|rat_0|rat_1|rat_2|rat_3|rat_4|rat_5|rat_6|rat_7|value|auto|bool|full|list|main|name|none|NULL|utf8|off|yes|no|on)(?!\\w)",
 			"name": "support.type.rtorrent"
 		},
 		"groups": {
@@ -143,14 +146,37 @@
 				{ "include": "#throttle-group" },
 				{ "include": "#network-group" },
 				{ "include": "#ip_tables-group" },
-				{ "include": "#ipv4_filter-group" }
+				{ "include": "#ipv4_filter-group" },
+				{ "include": "#ui-group" },
+				{ "include": "#view-group" },
+				{ "include": "#event-group" },
+				{ "include": "#load-group" },
+				{ "include": "#session-group" },
+				{ "include": "#scheduling-group" },
+				{ "include": "#scripting-group" },
+				{ "include": "#string-group" },
+				{ "include": "#strings-group" },
+				{ "include": "#array-group" },
+				{ "include": "#math-group" },
+				{ "include": "#convert-group" },
+				{ "include": "#directory-group" },
+				{ "include": "#encoding-group" },
+				{ "include": "#trackers-group" },
+				{ "include": "#miscellaneous-group" },
+				{ "include": "#cfg-group" },
+				{ "include": "#pyro-group" },
+				{ "include": "#tag-group" },
+				{ "include": "#d-group" },
+				{ "include": "#f-group" },
+				{ "include": "#p-group" },
+				{ "include": "#t-group" }
 			]
 		},
 		"method-group": {
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=method\\.)(insert|const|erase|get|set_key|set|has_key|list_keys|rlookup|redirect)"
+					"match": "(?<=method\\.)(use_deprecated|use_intermediate|insert|const|erase|get|set_key|set|has_key|list_keys|rlookup|redirect)(?!\\w)"
 				}
 			]
 		},
@@ -158,7 +184,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?:execute2|(?<=execute\\.)(nothrow|throw|capture_nothrow|capture|raw_nothrow|raw))"
+					"match": "(?<=(execute|execute2)\\.)(nothrow|throw|capture_nothrow|capture|raw_nothrow|raw)(?!\\w)"
 				}
 			]
 		},
@@ -166,7 +192,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=system\\.)(listMethods|methodExist|methodHelp|methodSignature|getCapabilities|capabilities|multicall|daemon|shutdown|api_version|client_version|library_version|colors|file_status_cache|hostname|random|time_usec|time_seconds|time|umask|files|file|has|cwd|env|pid)"
+					"match": "(?<=system\\.)(listMethods|methodExist|methodHelp|methodSignature|startup_time|getCapabilities|capabilities|multicall|daemon|shutdown|api_version|client_version|library_version|colors|file_status_cache|hostname|random|time_usec|time_seconds|time|umask|files|file|has|cwd|env|pid)(?!\\w)"
 				}
 			]
 		},
@@ -174,7 +200,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=log\\.)(add_output|execute|xmlrpc|open_file_pid|open_gz_file_pid|open_file|open_gz_file|vmmap|messages)"
+					"match": "(?<=log\\.)(add_output|execute|xmlrpc|open_file_pid|open_gz_file_pid|open_file|open_gz_file|vmmap|messages)(?!\\w)"
 				}
 			]
 		},
@@ -182,7 +208,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=dht\\.)(add_node|mode|port|statistics|throttle)"
+					"match": "(?<=dht\\.)(add_node|mode|port|statistics|throttle)(?!\\w)"
 				}
 			]
 		},
@@ -190,7 +216,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=pieces\\.)(hash|memory|preload|stats_not_preloaded|stats_preloaded|stats|sync)"
+					"match": "(?<=pieces\\.)(hash|memory|preload|stats_not_preloaded|stats_preloaded|stats|sync)(?!\\w)"
 				}
 			]
 		},
@@ -198,7 +224,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=protocol\\.)(choke_heuristics|connection|encryption|pex)"
+					"match": "(?<=protocol\\.)(choke_heuristics|connection|encryption|pex)(?!\\w)"
 				}
 			]
 		},
@@ -206,7 +232,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=throttle\\.)(max_downloads|max_uploads|min_downloads|min_uploads|max_peers|min_peers|unchoked_downloads|unchoked_uploads|global_down|global_up|names|down|up|ip)"
+					"match": "(?<=throttle\\.)(max_downloads|max_uploads|min_downloads|min_uploads|max_peers|min_peers|unchoked_downloads|unchoked_uploads|global_down|global_up|names|down|up|ip)(?!\\w)"
 				}
 			]
 		},
@@ -214,7 +240,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=network\\.)(bind_address|local_address|max_open_files|max_open_sockets|open_sockets|port_open|port_random|port_range|proxy_address|receive_buffer|send_buffer|history|xmlrpc|scgi|tos|http|listen)"
+					"match": "(?<=network\\.)(bind_address|local_address|max_open_files|max_open_sockets|open_sockets|port_open|port_random|port_range|proxy_address|receive_buffer|send_buffer|history|xmlrpc|scgi|tos|http|listen)(?!\\w)"
 				}
 			]
 		},
@@ -222,7 +248,7 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=ip_tables\\.)(add_address|insert_table|size_data|get)"
+					"match": "(?<=ip_tables\\.)(add_address|insert_table|size_data|get)(?!\\w)"
 				}
 			]
 		},
@@ -230,10 +256,193 @@
 			"patterns": [
 				{
 					"name": "variable.other.property.rtorrent",
-					"match": "(?<=ipv4_filter\\.)(add_address|size_data|dump|load|get)"
+					"match": "(?<=ipv4_filter\\.)(add_address|size_data|dump|load|get)(?!\\w)"
+				}
+			]
+		},
+		"ui-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=ui\\.)(current_view|torrent_list|unfocus_download|bind_key|canvas_color|color|column|focus|find|style)(?!\\w)"
+				}
+			]
+		},
+		"view-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=view\\.)(event_added|event_removed|persistent|filter_all|filter_download|filter_on|set_visible|set_not_visible|size_not_visible|sort_current|sort_new|collapsed|filter|list|size|sort|set|add)(?!\\w)"
+				}
+			]
+		},
+		"d-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=d\\.)(is_not_partially_done|peers_not_connected|connection_current|accepting_seeders|is_partially_done|save_full_session|update_priorities|completed_chunks|connection_leech|is_hash_checking|tracker_announce|completed_bytes|connection_seed|ignore_commands|is_hash_checked|peers_accounted|peers_connected|tracker_numwant|free_diskspace|hashing_failed|peers_complete|tracker_domain|tracker_scrape|base_filename|state_changed|state_counter|creation_date|downloads_max|downloads_min|is_multi_file|is_pex_active|local_id_html|max_file_size|peer_exchange|throttle_name|tracker_focus|wanted_chunks|tracker_alias|chunks_hashed|tied_to_file|custom_throw|max_size_pex|priority_str|session_file|tracker_size|loaded_file|create_link|delete_link|delete_tied|save_resume|size_chunks|uploads_max|uploads_min|chunks_seen|multicall2|disconnect|is_private|left_bytes|size_bytes|size_files|bytes_done|check_hash|chunk_size|incomplete|multicall|base_path|data_path|directory|is_active|try_close|try_start|last_xfer|load_date|peers_max|peers_min|timestamp|try_stop|local_id|bitfield|category|priority|size_pex|complete|is_open|custom1|custom2|custom3|custom4|custom5|hashing|is_meta|message|tracker|custom|resume|erase|group|ratio|views|close|pause|state|start|watch|down|hash|mode|skip|stop|name|open|up)(?!\\w)"
+				}
+			]
+		},
+		"f-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=f\\.)(multicall|completed_chunks|frozen_path|is_created|is_open|is_create_queued|set_create_queued|unset_create_queued|is_resize_queued|set_resize_queued|unset_resize_queued|last_touched|match_depth_next|match_depth_prev|offset|prioritize_first|prioritize_last|priority|range_first|range_second|size_bytes|size_chunks|path_components|path_depth|path)(?!\\w)"
+				}
+			]
+		},
+		"p-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=p\\.)(multicall|address|banned|call_target|client_version|completed_percent|disconnect_delayed|disconnect|down_rate|down_total|id_html|is_encrypted|is_incoming|is_obfuscated|is_preferred|is_unwanted|options_str|peer_rate|peer_total|is_snubbed|snubbed|up_rate|up_total|port|id)(?!\\w)"
+				}
+			]
+		},
+		"t-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=t\\.)(multicall|activity_time_last|activity_time_next|can_scrape|is_usable|is_enabled|disable|enable|failed_counter|failed_time_last|failed_time_next|is_busy|is_open|is_extra_tracker|latest_event|latest_new_peers|latest_sum_peers|min_interval|normal_interval|scrape_counter|scrape_complete|scrape_downloaded|scrape_incomplete|scrape_time_last|success_counter|success_time_last|success_time_next|group|type|url|id)(?!\\w)"
+				}
+			]
+		},
+		"load-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=load\\.)(normal|verbose|category|start_verbose|raw_verbose|raw_start_verbose|raw_start|start|raw)(?!\\w)"
+				}
+			]
+		},
+		"session-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=session\\.)(on_completion|use_lock|path|save|name)(?!\\w)"
+				}
+			]
+		},
+		"event-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=event\\.)(download|view)(?!\\w)"
+				}
+			]
+		},
+		"scheduling-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=close_low_diskspace\\.)(normal)(?!\\w)"
+				}
+			]
+		},
+		"scripting-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?:(?<=import\\.)(return)|(?<=elapsed\\.)(greater|less))(?!\\w)"
+				}
+			]
+		},
+		"string-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=string\\.)(len|equals|startswith|endswith|contains_i|contains|substr|shorten|join|split|lpad|rpad|lstrip|rstrip|strip|map|replace)(?!\\w)"
+				}
+			]
+		},
+		"array-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=array\\.)(at)(?!\\w)"
+				}
+			]
+		},
+		"math-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=math\\.)(add|sub|mul|div|mod|min|max|cnt|avg|med)(?!\\w)"
+				}
+			]
+		},
+		"convert-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=convert\\.)(date|elapsed_time|gm_date|gm_time|throttle|time_delta|human_size|magnitude|time|kb|mb|xb)(?!\\w)"
+				}
+			]
+		},
+		"strings-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=strings\\.)(choke_heuristics|connection_type|encryption|ip_filter|ip_tos|tracker_mode|tracker_event|log_group)(?!\\w)"
+				}
+			]
+		},
+		"directory-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=directory\\.)(watch|default)(?!\\w)"
+				}
+			]
+		},
+		"encoding-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=encoding\\.)(add)(?!\\w)"
+				}
+			]
+		},
+		"trackers-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=trackers\\.)(disable|enable|numwant|use_udp|alias)(?!\\w)"
+				}
+			]
+		},
+		"miscellaneous-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?:(?<=file\\.)(append)|(?<=fi\\.)(filename_last|is_file)|(?<=keys\\.)(layout))(?!\\w)"
+				}
+			]
+		},
+		"cfg-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=cfg\\.)(basedir|watch|logs|logfile|seed_seconds)(?!\\w)"
+				}
+			]
+		},
+		"pyro-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=pyro\\.)(last_xfer|category|collapsed_view|color_theme|watchdog|extended|logfile_path|bin_dir|view)(?!\\w)"
+				}
+			]
+		},
+		"tag-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=tag\\.)(add|rm|show)(?!\\w)"
 				}
 			]
 		}
 	}
 }
-

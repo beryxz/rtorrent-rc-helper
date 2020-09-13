@@ -7,12 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Syntax highlighting for all groups in the docs
 - Syntax highlighting for groups levels after the 2nd
 - Auto Completion
 
-## [0.1.0] - 2020-09-10
+## [1.0.0] - 2020-09-13
+### Added
 
+- Syntax highlighting for all remaining groups in [rtorrent-docs](https://rtorrent-docs.readthedocs.io/en/latest/cmd-ref.html)
+
+### Fixed
+
+- Various commands had wrong endings
+
+## [0.1.0] - 2020-09-10
 ### Added
 
 - New language "`rtorrent`"
@@ -30,5 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - method.*
 - Syntax highlighting for common types like strings, number and braces
 
-[Unreleased]: https://github.com/beryxz/rtorrent-rc-helper/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/beryxz/rtorrent-rc-helper/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/beryxz/rtorrent-rc-helper/releases/tag/v1.0.0
 [0.1.0]: https://github.com/beryxz/rtorrent-rc-helper/releases/tag/v0.1.0
