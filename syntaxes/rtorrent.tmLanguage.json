@@ -79,7 +79,7 @@
 			"patterns": [
 				{
 					"name": "meta.var.expr.rtorrent",
-					"begin": "(?<=^)(convert|quit|cull|purge|tag|pyro|startup_time|cfg|array|math|to_kb|to_mb|to_xb|to_date|to_elapsed_time|to_gm_date|to_gm_time|to_time|to_throttle|value|load|session|schedule|schedule_remove|schedule2|schedule_remove2|start_tied|stop_untied|close_untied|remove_untied|close_low_diskspace|method|execute2|event|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter|view|ui|torrent_list_layout|download_list|try_import|import|branch|if|do|and|or|not|less|equal|greater|elapsed|compare|cat|string|strings|directory|encoding|encoding_list|trackers|print|add_peer|bind|catch|check_hash|connection_leech|connection_seed|download_rate|encoding_list|encryption|ip|key_layout|max_downloads|max_downloads_div|max_downloads_global|max_memory_usage|max_peers|max_peers_seed|max_uploads|max_uploads_div|max_uploads_global|min_downloads|min_peers|min_peers_seed|min_uploads|on_ratio|port_random|port_range|proxy_address|scgi_local|scgi_port|torrent_list_layout|upload_rate|file|fi|keys|d|f|p|t)(?=[\\. \\n])",
+					"begin": "(?<=^)(max_downloads_global|close_low_diskspace|torrent_list_layout|max_uploads_global|max_downloads_div|connection_leech|max_memory_usage|schedule_remove2|connection_seed|max_uploads_div|schedule_remove|to_elapsed_time|max_peers_seed|min_peers_seed|download_list|download_rate|encoding_list|max_downloads|min_downloads|proxy_address|remove_untied|close_untied|startup_time|ipv4_filter|max_uploads|min_uploads|port_random|stop_untied|to_throttle|upload_rate|check_hash|encryption|key_layout|port_range|scgi_local|start_tied|to_gm_date|to_gm_time|try_import|directory|ip_tables|max_peers|min_peers|scgi_port|schedule2|add_peer|argument|dht_port|encoding|execute2|on_ratio|protocol|schedule|throttle|trackers|compare|convert|elapsed|execute|greater|network|session|strings|to_date|to_time|branch|import|method|pieces|string|system|array|catch|equal|event|print|purge|to_kb|to_mb|to_xb|value|bind|cull|file|keys|less|load|math|pyro|quit|view|and|cat|cfg|dht|log|not|tag|do|fi|if|ip|or|ui|d|f|p|t)(?=[\\. \\n])",
 					"end": "$",
 					"beginCaptures": {
 						"1": {
@@ -99,7 +99,7 @@
 			"patterns": [
 				{
 					"name": "meta.var.expr.rtorrent",
-					"begin": "(?<=[\\( ,=])(convert|quit|cull|purge|tag|pyro|startup_time|cfg|array|math|to_kb|to_mb|to_xb|to_date|to_elapsed_time|to_gm_date|to_gm_time|to_time|to_throttle|value|load|session|schedule|schedule_remove|schedule2|schedule_remove2|start_tied|stop_untied|close_untied|remove_untied|close_low_diskspace|method|execute2|event|execute|system|log|dht_port|dht|pieces|protocol|throttle|network|ip_tables|ipv4_filter|view|ui|torrent_list_layout|download_list|try_import|import|branch|if|do|and|or|not|less|equal|greater|elapsed|compare|cat|string|strings|directory|encoding|encoding_list|trackers|print|add_peer|bind|catch|check_hash|connection_leech|connection_seed|download_rate|encoding_list|encryption|ip|key_layout|max_downloads|max_downloads_div|max_downloads_global|max_memory_usage|max_peers|max_peers_seed|max_uploads|max_uploads_div|max_uploads_global|min_downloads|min_peers|min_peers_seed|min_uploads|on_ratio|port_random|port_range|proxy_address|scgi_local|scgi_port|torrent_list_layout|upload_rate|file|fi|keys|d|f|p|t)(?=[\\.\\) ,])",
+					"begin": "(?<=[\\( ,=])(max_downloads_global|close_low_diskspace|torrent_list_layout|max_uploads_global|max_downloads_div|connection_leech|max_memory_usage|schedule_remove2|connection_seed|max_uploads_div|schedule_remove|to_elapsed_time|max_peers_seed|min_peers_seed|download_list|download_rate|encoding_list|max_downloads|min_downloads|proxy_address|remove_untied|close_untied|startup_time|ipv4_filter|max_uploads|min_uploads|port_random|stop_untied|to_throttle|upload_rate|check_hash|encryption|key_layout|port_range|scgi_local|start_tied|to_gm_date|to_gm_time|try_import|directory|ip_tables|max_peers|min_peers|scgi_port|schedule2|add_peer|argument|dht_port|encoding|execute2|on_ratio|protocol|schedule|throttle|trackers|compare|convert|elapsed|execute|greater|network|session|strings|to_date|to_time|branch|import|method|pieces|string|system|array|catch|equal|event|print|purge|to_kb|to_mb|to_xb|value|bind|cull|file|keys|less|load|math|pyro|quit|view|and|cat|cfg|dht|log|not|tag|do|fi|if|ip|or|ui|d|f|p|t)(?=[\\.\\) ,])",
 					"end": "(?=[\\) ,\"])",
 					"beginCaptures": {
 						"1": {
@@ -166,6 +166,7 @@
 				{ "include": "#cfg-group" },
 				{ "include": "#pyro-group" },
 				{ "include": "#tag-group" },
+				{ "include": "#argument-group" },
 				{ "include": "#d-group" },
 				{ "include": "#f-group" },
 				{ "include": "#p-group" },
@@ -441,6 +442,14 @@
 				{
 					"name": "variable.other.property.rtorrent",
 					"match": "(?<=tag\\.)(add|rm|show)(?!\\w)"
+				}
+			]
+		},
+		"argument-group": {
+			"patterns": [
+				{
+					"name": "variable.other.property.rtorrent",
+					"match": "(?<=argument\\.)(\\d+)(?=[ =])"
 				}
 			]
 		}
